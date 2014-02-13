@@ -1,7 +1,6 @@
 package es.indra.formacion.pr.web.servlet;
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import es.indra.formacion.pr.web.exception.EmarketServiceException;
 import es.indra.formacion.pr.web.service.IProductoService;
-import es.indra.formacion.pr.web.service.ProductoService;
 import es.indra.formacion.pr.web.to.Producto;
 
 /**
@@ -36,7 +34,7 @@ public class PrincipalServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		IProductoService productoService = new ProductoService();
+		IProductoService productoService = ProductoServiceFactory.createProductoService();
 		
 		//PrintWriter pw = new PrintWriter(new OutputStreamWriter(response.getOutputStream(), "utf-8"));
 		response.setCharacterEncoding("UTF-8");

@@ -6,7 +6,7 @@ import java.util.List;
 import es.indra.formacion.pr.web.exception.EmarketDaoException;
 import es.indra.formacion.pr.web.to.Producto;
 
-public class ProductoDaoMockup implements IProductoDao {
+class ProductoDaoMockup implements IProductoDao {
 	private List<Producto> productos = new ArrayList<Producto>();
 	private int contador = 0;
 	
