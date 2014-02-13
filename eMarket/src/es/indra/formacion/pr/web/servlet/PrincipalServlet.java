@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import es.indra.formacion.pr.web.exception.EmarketServiceException;
 import es.indra.formacion.pr.web.service.IProductoService;
+import es.indra.formacion.pr.web.service.ProductoServiceFactory;
 import es.indra.formacion.pr.web.to.Producto;
 
 /**
