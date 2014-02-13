@@ -1,7 +1,6 @@
 package es.indra.formacion.pr.web.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -31,10 +30,21 @@ public class ProcesarServlet extends HttpServlet {
 		String nombre = request.getParameter("nombre");
 		String apellido = request.getParameter("apellido");
 		
-		PrintWriter pw = response.getWriter();
-		pw.println("Nombre: " + nombre + "<br>");
-		pw.println("Apellido: " + apellido);
-		pw.flush();
+		// TODO: Mejorar validaciones
+		if (nombre == null || nombre.trim().length() == 0 )
+			nombre = "N/D";
+		if (apellido == null || apellido.trim().length() == 0 )
+			apellido = "N/D";
+
+		request.setAttribute("nombre", nombre);
+		request.setAttribute("apellido", apellido);
+		
+		getServletContext().getRequestDispatcher("/Mostrar").forward(request, response);
 	}
 
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		doPost(req, resp);
+	}
 }

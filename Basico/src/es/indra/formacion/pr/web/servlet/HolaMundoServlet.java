@@ -2,6 +2,7 @@ package es.indra.formacion.pr.web.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebInitParam;
@@ -37,13 +38,15 @@ public class HolaMundoServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String nombres[] = new String[] { "uno", "dos", "tres", "cuatro" };
+				
+		String titulo = "Hola: " + request.getParameter("param"); // => ?nombre=TEXTO
+		request.setAttribute("titulo", titulo);
+		request.setAttribute("fecha", new Date());
 		
 		PrintWriter pw = response.getWriter();
-		pw.println("<html>");
-		pw.println("<head>");
-		pw.println("<title>Hola mundo!!</title>");
-		pw.println("</head>");
-		pw.println("<body>");
+		
+		// Incluyendo la cabecera
+		getServletContext().getRequestDispatcher("/Cabecera").include(request, response);
 		
 		// Mensaje estático
 		pw.println("Hola mundo!!");		
@@ -66,9 +69,9 @@ public class HolaMundoServlet extends HttpServlet {
 		pw.println("<input type='submit' value='enviar'><br>");
 		pw.println("</form>");		
 
-		// Cierre
-		pw.println("</body>");
-		pw.println("</html>");
+		// Incluyendo pie de página
+		getServletContext().getRequestDispatcher("/Pie").include(request, response);
+		
 		pw.flush();
 	}
 
