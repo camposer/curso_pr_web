@@ -1,7 +1,10 @@
 package es.indra.formacion.pr.web.servlet;
 
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,7 +12,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import es.indra.formacion.pr.web.model.Producto;
+import es.indra.formacion.pr.web.exception.EmarketServiceException;
+import es.indra.formacion.pr.web.service.IProductoService;
+import es.indra.formacion.pr.web.service.ProductoService;
+import es.indra.formacion.pr.web.to.Producto;
 
 /**
  * Servlet implementation class PrincipalServlet
@@ -30,6 +36,10 @@ public class PrincipalServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		IProductoService productoService = new ProductoService();
+		
+		//PrintWriter pw = new PrintWriter(new OutputStreamWriter(response.getOutputStream(), "utf-8"));
+		response.setCharacterEncoding("UTF-8");
 		PrintWriter pw = response.getWriter();
 		
 		pw.println("<!DOCTYPE html>");
@@ -49,21 +59,24 @@ public class PrincipalServlet extends HttpServlet {
 		pw.println("					<th>Precio</th>");
 		pw.println("					<th>Cantidad</th>");
 		pw.println("				</tr>");
-		pw.println("				<tr>");
-		pw.println("					<td>Portátiles</td>");
-		pw.println("					<td>" + Producto.PRECIO_PORTATIL + " €</td>");
-		pw.println("					<td><input type='text' name='cantidadPortatil' maxlength='3'></td>");
-		pw.println("				</tr>");
-		pw.println("				<tr>");
-		pw.println("					<td>Cámaras</td>");
-		pw.println("					<td>" + Producto.PRECIO_CAMARA + " €</td>");
-		pw.println("					<td><input type='text' name='cantidadCamara' maxlength='3'></td>");
-		pw.println("				</tr>");
-		pw.println("				<tr>");
-		pw.println("					<td>DVD</td>");
-		pw.println("					<td>" + Producto.PRECIO_DVD + " €</td>");
-		pw.println("					<td><input type='text' name='cantidadDvd' maxlength='3'></td>");
-		pw.println("				</tr>");
+		
+		List<Producto> productos = new ArrayList<Producto>();
+		try {
+			productos = productoService.obtenerProductos();
+		} catch (EmarketServiceException e) {
+			e.printStackTrace();
+		}
+		
+		for (Producto p : productos) {
+			pw.println("				<tr>");
+			pw.println("					<td>" + p.getNombre() + "</td>");
+			pw.println("					<td>" + p.getPrecio() + " €</td>");
+			pw.println("					<td><input type='text' name='cantidad' maxlength='3' value='0'>"
+					+ "<input type='hidden' name='productoId' value='" +  p.getId() + "'>"
+					+ "</td>");
+			pw.println("				</tr>");
+		}
+		
 		pw.println("				<tr>");
 		pw.println("					<td colspan='3'>");
 		pw.println("						<input type='reset' value='Borrar'>");

@@ -9,7 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import es.indra.formacion.pr.web.model.Producto;
+import es.indra.formacion.pr.web.exception.EmarketServiceException;
+import es.indra.formacion.pr.web.service.IProductoService;
+import es.indra.formacion.pr.web.service.ProductoService;
+import es.indra.formacion.pr.web.to.Producto;
 
 /**
  * Servlet implementation class CarritoServlet
@@ -30,22 +33,13 @@ public class CarritoServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String scantidadPortatil = request.getParameter("cantidadPortatil");
-		String scantidadDvd = request.getParameter("cantidadDvd");
-		String scantidadCamara = request.getParameter("cantidadCamara");
+		IProductoService productoService = new ProductoService();
 		
-		// Conversión de las cantidades a enteros
+		String[] scantidades = request.getParameterValues("cantidad");
+		String[] sproductoIds = request.getParameterValues("productoId");
+		
 		// TODO: Incluir validaciones!
-		int cantidadPortatil = Integer.parseInt(scantidadPortatil);
-		int cantidadDvd = Integer.parseInt(scantidadDvd);
-		int cantidadCamara = Integer.parseInt(scantidadCamara);
-		
-		int totalPortatil = (cantidadPortatil * Producto.PRECIO_PORTATIL);
-		int totalDvd = (cantidadDvd * Producto.PRECIO_DVD);
-		int totalCamara = (cantidadCamara * Producto.PRECIO_CAMARA);
-		
-		int totalTotal = totalPortatil + totalDvd + totalCamara;
-		
+		response.setCharacterEncoding("UTF-8");
 		PrintWriter pw = response.getWriter();
 		
 		pw.println("<!DOCTYPE html>");
@@ -58,7 +52,7 @@ public class CarritoServlet extends HttpServlet {
 		pw.println("	</head>");
 		pw.println("	<body>");
 		pw.println("		<h1>Tienda de artículos electrónicos</h1>");
-		pw.println("		<form action='carrito.html' method='post'>");
+		pw.println("		<form>");
 		pw.println("			<table id='tablaCarrito' class='tabla'>");
 		pw.println("				<tr>");
 		pw.println("					<th>Artículo</th>");
@@ -66,29 +60,39 @@ public class CarritoServlet extends HttpServlet {
 		pw.println("					<th>Cantidad</th>");
 		pw.println("					<th>Precio</th>");
 		pw.println("				</tr>");
-		pw.println("				<tr>");
-		pw.println("					<td>Portátiles</td>");
-		pw.println("					<td>" + Producto.PRECIO_PORTATIL + " €</td>");
-		pw.println("					<td><input type='text' name='cantidad' maxlength='3'  value='" + cantidadPortatil + "' ></td>");
-		pw.println("					<td><input type='text' name='precio' value='" + totalPortatil + "' readonly></td>");
-		pw.println("				</tr>");
-		pw.println("				<tr>");
-		pw.println("					<td>Cámaras</td>");
-		pw.println("					<td>" + Producto.PRECIO_CAMARA + " €</td>");
-		pw.println("					<td><input type='text' name='cantidad' maxlength='3'  value='" + cantidadCamara + "' ></td>");
-		pw.println("					<td><input type='text' name='precio' value='" + totalCamara + "' readonly></td>");
-		pw.println("				</tr>");
-		pw.println("				<tr>");
-		pw.println("					<td>DVD</td>");
-		pw.println("					<td>" + Producto.PRECIO_DVD + " €</td>");
-		pw.println("					<td><input type='text' name='cantidad' maxlength='3'  value='" + cantidadDvd + "' ></td>");
-		pw.println("					<td><input type='text' name='precio' value='" + totalDvd + "' readonly></td>");
-		pw.println("				</tr>");
+		
+		float totalTotal = 0f; 
+		for (int i = 0; i < sproductoIds.length; i++) {
+			Integer id = Integer.parseInt(sproductoIds[i]);
+			Integer cantidad = Integer.parseInt(scantidades[i]);
+			
+			Producto p = null;
+			try {
+				p = productoService.obtenerProducto(id);
+
+				if (p == null)
+					continue;
+				
+				p.setCantidad(cantidad);
+				totalTotal += p.getTotal();
+			} catch (EmarketServiceException e) {
+				e.printStackTrace();
+			}
+			
+			pw.println("				<tr>");
+			pw.println("					<td>" + p.getNombre() + "</td>");
+			pw.println("					<td>" + p.getPrecio() + " €</td>");
+			pw.println("					<td><input type='text' name='cantidad' maxlength='3'  value='" + p.getCantidad() + "' ></td>");
+			pw.println("					<td><input type='text' name='precio' value='" + p.getTotal() + "' readonly></td>");
+			pw.println("				</tr>");
+		}
+		
 		pw.println("				<tr class='total'>");
 		pw.println("					<td colspan='3'>Total</td>");
 		pw.println("					<td><input type='text' name='total' value='" + totalTotal + "'readonly></td>");
 		pw.println("				</tr>");
 		pw.println("				<tr>");
+		
 		pw.println("					<td colspan='4'>");
 		pw.println("						<input type='button' value='Atrás' onclick='javascript:window.history.back()'>");
 		pw.println("						<input type='button' value='Comprar'>");
@@ -100,6 +104,7 @@ public class CarritoServlet extends HttpServlet {
 		pw.println("</html>");
 
 		pw.flush();
+
 	}
 
 	@Override
