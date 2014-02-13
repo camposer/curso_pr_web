@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import es.indra.formacion.pr.web.model.Producto;
+
 /**
  * Servlet implementation class CarritoServlet
  */
@@ -28,6 +30,22 @@ public class CarritoServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String scantidadPortatil = request.getParameter("cantidadPortatil");
+		String scantidadDvd = request.getParameter("cantidadDvd");
+		String scantidadCamara = request.getParameter("cantidadCamara");
+		
+		// Conversión de las cantidades a enteros
+		// TODO: Incluir validaciones!
+		int cantidadPortatil = Integer.parseInt(scantidadPortatil);
+		int cantidadDvd = Integer.parseInt(scantidadDvd);
+		int cantidadCamara = Integer.parseInt(scantidadCamara);
+		
+		int totalPortatil = (cantidadPortatil * Producto.PRECIO_PORTATIL);
+		int totalDvd = (cantidadDvd * Producto.PRECIO_DVD);
+		int totalCamara = (cantidadCamara * Producto.PRECIO_CAMARA);
+		
+		int totalTotal = totalPortatil + totalDvd + totalCamara;
+		
 		PrintWriter pw = response.getWriter();
 		
 		pw.println("<!DOCTYPE html>");
@@ -50,25 +68,25 @@ public class CarritoServlet extends HttpServlet {
 		pw.println("				</tr>");
 		pw.println("				<tr>");
 		pw.println("					<td>Portátiles</td>");
-		pw.println("					<td>599 €</td>");
-		pw.println("					<td><input type='text' name='cantidad' maxlength='3'></td>");
-		pw.println("					<td><input type='text' name='precio' readonly></td>");
+		pw.println("					<td>" + Producto.PRECIO_PORTATIL + " €</td>");
+		pw.println("					<td><input type='text' name='cantidad' maxlength='3'  value='" + cantidadPortatil + "' ></td>");
+		pw.println("					<td><input type='text' name='precio' value='" + totalPortatil + "' readonly></td>");
 		pw.println("				</tr>");
 		pw.println("				<tr>");
 		pw.println("					<td>Cámaras</td>");
-		pw.println("					<td>230 €</td>");
-		pw.println("					<td><input type='text' name='cantidad' maxlength='3'></td>");
-		pw.println("					<td><input type='text' name='precio' readonly></td>");
+		pw.println("					<td>" + Producto.PRECIO_CAMARA + " €</td>");
+		pw.println("					<td><input type='text' name='cantidad' maxlength='3'  value='" + cantidadCamara + "' ></td>");
+		pw.println("					<td><input type='text' name='precio' value='" + totalCamara + "' readonly></td>");
 		pw.println("				</tr>");
 		pw.println("				<tr>");
 		pw.println("					<td>DVD</td>");
-		pw.println("					<td>60 €</td>");
-		pw.println("					<td><input type='text' name='cantidad' maxlength='3'></td>");
-		pw.println("					<td><input type='text' name='precio' readonly></td>");
+		pw.println("					<td>" + Producto.PRECIO_DVD + " €</td>");
+		pw.println("					<td><input type='text' name='cantidad' maxlength='3'  value='" + cantidadDvd + "' ></td>");
+		pw.println("					<td><input type='text' name='precio' value='" + totalDvd + "' readonly></td>");
 		pw.println("				</tr>");
 		pw.println("				<tr class='total'>");
 		pw.println("					<td colspan='3'>Total</td>");
-		pw.println("					<td><input type='text' name='total' readonly></td>");
+		pw.println("					<td><input type='text' name='total' value='" + totalTotal + "'readonly></td>");
 		pw.println("				</tr>");
 		pw.println("				<tr>");
 		pw.println("					<td colspan='4'>");

@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import es.indra.formacion.pr.web.model.Producto;
+
 /**
  * Servlet implementation class PrincipalServlet
  */
@@ -49,18 +51,18 @@ public class PrincipalServlet extends HttpServlet {
 		pw.println("				</tr>");
 		pw.println("				<tr>");
 		pw.println("					<td>Portátiles</td>");
-		pw.println("					<td>599 €</td>");
-		pw.println("					<td><input type='text' name='cantidad' maxlength='3'></td>");
+		pw.println("					<td>" + Producto.PRECIO_PORTATIL + " €</td>");
+		pw.println("					<td><input type='text' name='cantidadPortatil' maxlength='3'></td>");
 		pw.println("				</tr>");
 		pw.println("				<tr>");
 		pw.println("					<td>Cámaras</td>");
-		pw.println("					<td>230 €</td>");
-		pw.println("					<td><input type='text' name='cantidad' maxlength='3'></td>");
+		pw.println("					<td>" + Producto.PRECIO_CAMARA + " €</td>");
+		pw.println("					<td><input type='text' name='cantidadCamara' maxlength='3'></td>");
 		pw.println("				</tr>");
 		pw.println("				<tr>");
 		pw.println("					<td>DVD</td>");
-		pw.println("					<td>60 €</td>");
-		pw.println("					<td><input type='text' name='cantidad' maxlength='3'></td>");
+		pw.println("					<td>" + Producto.PRECIO_DVD + " €</td>");
+		pw.println("					<td><input type='text' name='cantidadDvd' maxlength='3'></td>");
 		pw.println("				</tr>");
 		pw.println("				<tr>");
 		pw.println("					<td colspan='3'>");
