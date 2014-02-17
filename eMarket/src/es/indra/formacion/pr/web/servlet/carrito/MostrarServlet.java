@@ -63,6 +63,7 @@ public class MostrarServlet extends HttpServlet {
 		pw.println("					<th>Precio</th>");
 		pw.println("					<th>Cantidad</th>");
 		pw.println("					<th>Precio</th>");
+		pw.println("					<th>Eliminar</th>");
 		pw.println("				</tr>");
 
 		float totalTotal = 0;
@@ -74,6 +75,7 @@ public class MostrarServlet extends HttpServlet {
 			pw.println("					<td>" + p.getPrecio() + " €</td>");
 			pw.println("					<td><input type='text' name='cantidad' maxlength='3'  value='" + p.getCantidad() + "' ></td>");
 			pw.println("					<td><input type='text' name='precio' value='" + p.getTotal() + "' readonly></td>");
+			pw.println("					<td class='eliminar'><a href='Eliminar?id=" + p.getId() + "'>x</a></td>");
 			pw.println("				</tr>");
 			
 			totalTotal += p.getTotal();
@@ -85,8 +87,8 @@ public class MostrarServlet extends HttpServlet {
 		pw.println("				</tr>");
 		pw.println("				<tr>");
 		
-		pw.println("					<td colspan='4'>");
-		pw.println("						<input type='button' value='Atrás' onclick='javascript:window.history.back()'>");
+		pw.println("					<td colspan='5'>");
+		pw.println("						<input type='button' value='Atrás' onclick='javascript:window.location.href=\"Principal\";'>");
 		pw.println("						<input type='button' value='Comprar'>");
 		pw.println("					</td>");
 		pw.println("				</tr>");

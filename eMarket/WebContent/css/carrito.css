@@ -47,3 +47,6 @@
 				background-color: transparent !important;
 			}
 
+#tablaCarrito .eliminar {
+	text-align: center;
+}
