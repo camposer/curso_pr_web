@@ -1,30 +1,29 @@
-package es.indra.formacion.pr.web.servlet;
+package es.indra.formacion.pr.web.servlet.carrito;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import es.indra.formacion.pr.web.exception.EmarketServiceException;
-import es.indra.formacion.pr.web.service.IProductoService;
-import es.indra.formacion.pr.web.service.ProductoServiceFactory;
 import es.indra.formacion.pr.web.to.Producto;
 
 /**
  * Servlet implementation class CarritoServlet
  */
-@WebServlet("/Carrito")
-public class CarritoServlet extends HttpServlet {
+@WebServlet("/carrito/Mostrar")
+public class MostrarServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CarritoServlet() {
+    public MostrarServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,12 +31,17 @@ public class CarritoServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@SuppressWarnings("unchecked")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		IProductoService productoService = ProductoServiceFactory.createProductoService();
+		HttpSession sesion = request.getSession();
 		
-		String[] scantidades = request.getParameterValues("cantidad");
-		String[] sproductoIds = request.getParameterValues("productoId");
+		Map<Integer, Producto> productos = (Map<Integer, Producto>) sesion.getAttribute("productos");
 		
+		if (productos == null) {
+			response.sendRedirect("Principal"); // Esta es una URL relativa, si fuese absoluta tendría que ser: /eMarket/carrito/Principal		
+			return;
+		}
+
 		// TODO: Incluir validaciones!
 		response.setCharacterEncoding("UTF-8");
 		PrintWriter pw = response.getWriter();
@@ -47,8 +51,8 @@ public class CarritoServlet extends HttpServlet {
 		pw.println("	<head>");
 		pw.println("		<meta charset='utf-8'>");
 		pw.println("		<title>Tienda de artículos electrónicos</title>");
-		pw.println("		<link rel='stylesheet' type='text/css' href='css/estilos.css'>");
-		pw.println("		<link rel='stylesheet' type='text/css' href='css/carrito.css'>");
+		pw.println("		<link rel='stylesheet' type='text/css' href='../css/estilos.css'>");
+		pw.println("		<link rel='stylesheet' type='text/css' href='../css/carrito.css'>");
 		pw.println("	</head>");
 		pw.println("	<body>");
 		pw.println("		<h1>Tienda de artículos electrónicos</h1>");
@@ -60,24 +64,10 @@ public class CarritoServlet extends HttpServlet {
 		pw.println("					<th>Cantidad</th>");
 		pw.println("					<th>Precio</th>");
 		pw.println("				</tr>");
-		
-		float totalTotal = 0f; 
-		for (int i = 0; i < sproductoIds.length; i++) {
-			Integer id = Integer.parseInt(sproductoIds[i]);
-			Integer cantidad = Integer.parseInt(scantidades[i]);
-			
-			Producto p = null;
-			try {
-				p = productoService.obtenerProducto(id);
 
-				if (p == null)
-					continue;
-				
-				p.setCantidad(cantidad);
-				totalTotal += p.getTotal();
-			} catch (EmarketServiceException e) {
-				e.printStackTrace();
-			}
+		float totalTotal = 0;
+		for (Integer key : productos.keySet()) {
+			Producto p = productos.get(key);
 			
 			pw.println("				<tr>");
 			pw.println("					<td>" + p.getNombre() + "</td>");
@@ -85,6 +75,8 @@ public class CarritoServlet extends HttpServlet {
 			pw.println("					<td><input type='text' name='cantidad' maxlength='3'  value='" + p.getCantidad() + "' ></td>");
 			pw.println("					<td><input type='text' name='precio' value='" + p.getTotal() + "' readonly></td>");
 			pw.println("				</tr>");
+			
+			totalTotal += p.getTotal();
 		}
 		
 		pw.println("				<tr class='total'>");

@@ -1,4 +1,4 @@
-package es.indra.formacion.pr.web.servlet;
+package es.indra.formacion.pr.web.servlet.carrito;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,7 +19,7 @@ import es.indra.formacion.pr.web.to.Producto;
 /**
  * Servlet implementation class PrincipalServlet
  */
-@WebServlet("/Principal")
+@WebServlet("/carrito/Principal")
 public class PrincipalServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -46,12 +46,12 @@ public class PrincipalServlet extends HttpServlet {
 		pw.println("	<head>");
 		pw.println("		<meta charset='utf-8'>");
 		pw.println("		<title>Tienda de artículos electrónicos</title>");
-		pw.println("		<link rel='stylesheet' type='text/css' href='css/estilos.css'>");
-		pw.println("		<link rel='stylesheet' type='text/css' href='css/principal.css'>");
+		pw.println("		<link rel='stylesheet' type='text/css' href='../css/estilos.css'>");
+		pw.println("		<link rel='stylesheet' type='text/css' href='../css/principal.css'>");
 		pw.println("	</head>");
 		pw.println("	<body>");
 		pw.println("		<h1>Tienda de artículos electrónicos</h1>");
-		pw.println("		<form action='Carrito' method='post'>");
+		pw.println("		<form action='Agregar' method='post'>");
 		pw.println("			<table id='tablaArticulo' class='tabla'>");
 		pw.println("				<tr>");
 		pw.println("					<th>Artículo</th>");
@@ -80,7 +80,7 @@ public class PrincipalServlet extends HttpServlet {
 		pw.println("					<td colspan='3'>");
 		pw.println("						<input type='reset' value='Borrar'>");
 		pw.println("						<input type='submit' value='Agregar al carrito'>");
-		pw.println("						<input type='button' value='Ver carrito' onclick='javascript:window.location.href=\"Carrito\";'>");
+		pw.println("						<input type='button' value='Ver carrito' onclick='javascript:window.location.href=\"Mostrar\";'>");
 		pw.println("					</td>");
 		pw.println("				</tr>");
 		pw.println("			</table>");
