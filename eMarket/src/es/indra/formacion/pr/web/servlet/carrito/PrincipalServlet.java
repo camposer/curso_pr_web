@@ -1,7 +1,6 @@
 package es.indra.formacion.pr.web.servlet.carrito;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,58 +36,16 @@ public class PrincipalServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		IProductoService productoService = ProductoServiceFactory.createProductoService();
 		
-		//PrintWriter pw = new PrintWriter(new OutputStreamWriter(response.getOutputStream(), "utf-8"));
-		response.setCharacterEncoding("UTF-8");
-		PrintWriter pw = response.getWriter();
-		
-		pw.println("<!DOCTYPE html>");
-		pw.println("<html>");
-		pw.println("	<head>");
-		pw.println("		<meta charset='utf-8'>");
-		pw.println("		<title>Tienda de artículos electrónicos</title>");
-		pw.println("		<link rel='stylesheet' type='text/css' href='../css/estilos.css'>");
-		pw.println("		<link rel='stylesheet' type='text/css' href='../css/principal.css'>");
-		pw.println("	</head>");
-		pw.println("	<body>");
-		pw.println("		<h1>Tienda de artículos electrónicos</h1>");
-		pw.println("		<form action='Agregar' method='post'>");
-		pw.println("			<table id='tablaArticulo' class='tabla'>");
-		pw.println("				<tr>");
-		pw.println("					<th>Artículo</th>");
-		pw.println("					<th>Precio</th>");
-		pw.println("					<th>Cantidad</th>");
-		pw.println("				</tr>");
-		
 		List<Producto> productos = new ArrayList<Producto>();
 		try {
 			productos = productoService.obtenerProductos();
 		} catch (EmarketServiceException e) {
 			e.printStackTrace();
 		}
+
+		request.setAttribute("productos", productos);
 		
-		for (Producto p : productos) {
-			pw.println("				<tr>");
-			pw.println("					<td>" + p.getNombre() + "</td>");
-			pw.println("					<td>" + p.getPrecio() + " €</td>");
-			pw.println("					<td><input type='text' name='cantidad' maxlength='3' value='0'>"
-					+ "<input type='hidden' name='productoId' value='" +  p.getId() + "'>"
-					+ "</td>");
-			pw.println("				</tr>");
-		}
-		
-		pw.println("				<tr>");
-		pw.println("					<td colspan='3'>");
-		pw.println("						<input type='reset' value='Borrar'>");
-		pw.println("						<input type='submit' value='Agregar al carrito'>");
-		pw.println("						<input type='button' value='Ver carrito' onclick='javascript:window.location.href=\"Mostrar\";'>");
-		pw.println("					</td>");
-		pw.println("				</tr>");
-		pw.println("			</table>");
-		pw.println("		</form>");
-		pw.println("	</body>");
-		pw.println("</html>");
-		
-		pw.flush();
+		getServletContext().getRequestDispatcher("/carrito/principal.jsp").forward(request, response);
 	}
 
 }

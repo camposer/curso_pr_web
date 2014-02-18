@@ -60,7 +60,12 @@ public class AgregarServlet extends HttpServlet {
 
 		for (int i = 0; i < sproductoIds.length; i++) {
 			Integer id = Integer.parseInt(sproductoIds[i]);
-			Integer cantidad = Integer.parseInt(scantidades[i]);
+			Integer cantidad = null;
+			try {
+				cantidad = Integer.parseInt(scantidades[i]);
+			} catch (Exception e) {
+				continue; // Obviarlo porque no es un número la cantidad
+			}
 
 			if (cantidad > 0) { // Están agregando un producto
 				Producto prod = productos.get(id);

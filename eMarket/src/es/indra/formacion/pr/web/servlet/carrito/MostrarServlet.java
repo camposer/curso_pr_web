@@ -33,71 +33,7 @@ public class MostrarServlet extends HttpServlet {
 	 */
 	@SuppressWarnings("unchecked")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession sesion = request.getSession();
-		
-		Map<Integer, Producto> productos = (Map<Integer, Producto>) sesion.getAttribute("productos");
-		
-		if (productos == null) {
-			response.sendRedirect("Principal"); // Esta es una URL relativa, si fuese absoluta tendría que ser: /eMarket/carrito/Principal		
-			return;
-		}
-
-		// TODO: Incluir validaciones!
-		response.setCharacterEncoding("UTF-8");
-		PrintWriter pw = response.getWriter();
-		
-		pw.println("<!DOCTYPE html>");
-		pw.println("<html>");
-		pw.println("	<head>");
-		pw.println("		<meta charset='utf-8'>");
-		pw.println("		<title>Tienda de artículos electrónicos</title>");
-		pw.println("		<link rel='stylesheet' type='text/css' href='../css/estilos.css'>");
-		pw.println("		<link rel='stylesheet' type='text/css' href='../css/carrito.css'>");
-		pw.println("	</head>");
-		pw.println("	<body>");
-		pw.println("		<h1>Tienda de artículos electrónicos</h1>");
-		pw.println("		<form>");
-		pw.println("			<table id='tablaCarrito' class='tabla'>");
-		pw.println("				<tr>");
-		pw.println("					<th>Artículo</th>");
-		pw.println("					<th>Precio</th>");
-		pw.println("					<th>Cantidad</th>");
-		pw.println("					<th>Precio</th>");
-		pw.println("					<th>Eliminar</th>");
-		pw.println("				</tr>");
-
-		float totalTotal = 0;
-		for (Integer key : productos.keySet()) {
-			Producto p = productos.get(key);
-			
-			pw.println("				<tr>");
-			pw.println("					<td>" + p.getNombre() + "</td>");
-			pw.println("					<td>" + p.getPrecio() + " €</td>");
-			pw.println("					<td><input type='text' name='cantidad' maxlength='3'  value='" + p.getCantidad() + "' ></td>");
-			pw.println("					<td><input type='text' name='precio' value='" + p.getTotal() + "' readonly></td>");
-			pw.println("					<td class='eliminar'><a href='Eliminar?id=" + p.getId() + "'>x</a></td>");
-			pw.println("				</tr>");
-			
-			totalTotal += p.getTotal();
-		}
-		
-		pw.println("				<tr class='total'>");
-		pw.println("					<td colspan='3'>Total</td>");
-		pw.println("					<td><input type='text' name='total' value='" + totalTotal + "'readonly></td>");
-		pw.println("				</tr>");
-		pw.println("				<tr>");
-		
-		pw.println("					<td colspan='5'>");
-		pw.println("						<input type='button' value='Atrás' onclick='javascript:window.location.href=\"Principal\";'>");
-		pw.println("						<input type='button' value='Comprar'>");
-		pw.println("					</td>");
-		pw.println("				</tr>");
-		pw.println("			</table>");
-		pw.println("		</form>");
-		pw.println("	</body>");
-		pw.println("</html>");
-
-		pw.flush();
+		getServletContext().getRequestDispatcher("/carrito/mostrar.jsp").forward(request, response);
 
 	}
 
