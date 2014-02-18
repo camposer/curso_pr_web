@@ -1,6 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.Date" %>
+
+<%!
+	// Este método es definido dentro del Servlet (fuera del método service!)
+	public void saludar(String mensaje, JspWriter out) {
+		try {
+			out.println("Hola: " + mensaje);
+		} catch(Exception e) {}
+	}
+
+	public String saludo(String mensaje) {
+		return "Hola: " + mensaje;
+	}
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,8 +22,13 @@
 </head>
 <body>
 	<h1>Hola Mundo</h1>
-	Hola: <%= request.getParameter("nombre") %><br/>
-	
+	<% String nombre = request.getParameter("nombre"); %>	
+	Hola: <%= nombre %><br/>
+	<% 
+		saludar(nombre, out);
+	%><br/>
+	<%= saludo(nombre) %><br/>
+
 	<% Date fecha = new Date(); %>
 	
 	La fecha de hoy es: <%= fecha %><br/>
@@ -35,11 +53,9 @@
 			} // Cierra el for
 		%>
 	</table>
-	
+
 	<h2>Contextos</h2>
 	<%
-		String nombre = request.getParameter("nombre");
-					
 		if (nombre != null) {
 			application.setAttribute("nombre", nombre);
 			session.setAttribute("nombre", nombre);
@@ -53,6 +69,7 @@
 	Nombre en sesión: <%= session.getAttribute("nombre") %><br/>
 	Nombre en petición: <%= request.getAttribute("nombre") %><br/>
 	Nombre en página: <%= pageContext.getAttribute("nombre") %><br/>
+	
 	
 </body>
 </html>
