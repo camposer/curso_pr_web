@@ -6,8 +6,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Catálogo de Productos</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Catálogo de Productos</title>
+	<script>
+		var enviarFormulario = function() {
+			var form = document.forms["FormularioCatalogo"];
+			form.setAttribute("action", "ModificarCatalogo");
+			form.setAttribute("method", "POST");
+			form.submit();
+		} 
+	</script>
 </head>
 <body>
 	<h1>Catálogo de Productos</h1>
@@ -46,25 +54,31 @@
 			</tr>
 		</table>
 	</form>
-	
-	<table>
-		<tr>
-			<th>Nombre</th>
-			<th>Precio</th>
-			<th>Eliminar</th>
-		</tr>
-		<%
-		List<Producto> productos = (List<Producto>)request.getAttribute("productos");
-		if (productos != null) for (Producto p : productos) {
-		%>
+
+	<form name="FormularioCatalogo">	
+		<table>
 			<tr>
-				<td><%= p.getNombre() %></td>
-				<td><%= p.getPrecio() %></td>
-				<td><a href="Eliminar?id=<%= p.getId() %>">eliminar</a></td>
+				<th>Nombre</th>
+				<th>Precio</th>
+				<th>Eliminar</th>
 			</tr>
-		<%
-		}
-		%>
-	</table>
+			<%
+			List<Producto> productos = (List<Producto>)request.getAttribute("productos");
+			if (productos != null) for (Producto p : productos) {
+			%>
+				<tr>
+					<td>
+						<input name="productoId" type="hidden" value="<%= p.getId() %>"/>
+						<input name="nombre" type="text" value="<%= p.getNombre() %>"/>
+					</td>
+					<td><input name="precio" type="text" value="<%= p.getPrecio() %>"/></td>
+					<td><a href="EliminarCatalogo?id=<%= p.getId() %>">eliminar</a></td>
+				</tr>
+			<%
+			}
+			%>
+		</table>
+		<a href="#" onclick="enviarFormulario();"><img src="../img/modificar.png" title="Modificar todos"/></a>
+	</form>
 </body>
 </html>

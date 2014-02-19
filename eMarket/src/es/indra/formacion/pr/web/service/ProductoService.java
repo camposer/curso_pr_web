@@ -38,4 +38,22 @@ class ProductoService implements IProductoService {
 		}
 	}
 
+	@Override
+	public void eliminarProducto(Integer id) throws EmarketServiceException {
+		try {
+			productoDao.eliminar(id);
+		} catch (EmarketDaoException e) {
+			throw new EmarketServiceException("Error al eliminar el Producto con id = " + id, e); 
+		}
+	}
+
+	@Override
+	public void modificarProducto(Producto p) throws EmarketServiceException {
+		try {
+			productoDao.modificar(p);
+		} catch (EmarketDaoException e) {
+			throw new EmarketServiceException("Error al modificar Producto: " + p, e); 
+		}
+	}
+
 }

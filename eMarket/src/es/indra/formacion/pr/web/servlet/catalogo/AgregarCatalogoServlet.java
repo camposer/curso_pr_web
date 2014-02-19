@@ -64,7 +64,6 @@ public class AgregarCatalogoServlet extends HttpServlet {
 		
 		String nombre = request.getParameter("nombre");
 		String sprecio = request.getParameter("precio");
-		Float precio = null;
 		
 		// Validaciones
 		List<String> errores = validar(nombre, sprecio);

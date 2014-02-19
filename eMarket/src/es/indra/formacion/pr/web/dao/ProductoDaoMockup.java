@@ -47,4 +47,20 @@ class ProductoDaoMockup implements IProductoDao {
 		else
 			return null;
 	}
+
+	@Override
+	public void modificar(Producto p) throws EmarketDaoException {
+		int pos = buscarPos(p.getId());
+		
+		if (pos >= 0)
+			productos.set(pos, p);
+	}
+
+	@Override
+	public void eliminar(Integer id) throws EmarketDaoException {
+		int pos = buscarPos(id);
+		
+		if (pos >= 0)
+			productos.remove(pos);
+	}
 }

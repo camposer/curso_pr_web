@@ -1,8 +1,6 @@
 package es.indra.formacion.pr.web.servlet.catalogo;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,22 +8,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import es.indra.formacion.pr.web.exception.EmarketServiceException;
 import es.indra.formacion.pr.web.service.IProductoService;
 import es.indra.formacion.pr.web.service.ProductoServiceFactory;
-import es.indra.formacion.pr.web.to.Producto;
 
 /**
- * Servlet implementation class PrincipalServlet
+ * Servlet implementation class EliminarCatalogoServlet
  */
-// Definido en el DD
-public class PrincipalCatalogoServlet extends HttpServlet {
+@WebServlet("/catalogo/EliminarCatalogo")
+public class EliminarCatalogoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public PrincipalCatalogoServlet() {
+    public EliminarCatalogoServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -35,26 +31,17 @@ public class PrincipalCatalogoServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		IProductoService productoService = ProductoServiceFactory.createProductoService();
+		String sid = request.getParameter("id");
 		
-		List<Producto> productos = null;
-		
-		try {
-			productos = productoService.obtenerProductos();
-		} catch (EmarketServiceException e) {
-			e.printStackTrace();
+		if (sid != null) {
+			try {
+				productoService.eliminarProducto(Integer.parseInt(sid));
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
 		
-		request.setAttribute("productos", productos);
-		
-		getServletContext()
-			.getRequestDispatcher("/jsp/catalogo/principalCatalogo.jsp")
-			.forward(request, response);
+		response.sendRedirect("Principal");
 	}
 
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		
-		doGet(req, resp);
-	}
 }

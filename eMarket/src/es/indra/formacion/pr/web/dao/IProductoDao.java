@@ -8,5 +8,7 @@ import es.indra.formacion.pr.web.to.Producto;
 public interface IProductoDao {
 	public List<Producto> obtenerTodos() throws EmarketDaoException;
 	public void agregar(Producto p) throws EmarketDaoException;
+	public void modificar(Producto p) throws EmarketDaoException;
+	public void eliminar(Integer id) throws EmarketDaoException;
 	public Producto obtener(Integer id) throws EmarketDaoException;
 }
