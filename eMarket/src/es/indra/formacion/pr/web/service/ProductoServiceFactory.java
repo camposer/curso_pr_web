@@ -1,13 +1,12 @@
 package es.indra.formacion.pr.web.service;
 
-
 public abstract class ProductoServiceFactory {
-	private static IProductoService INSTANCE = null;
+	private static IProductoService instance = null;
 	
 	public static IProductoService createProductoService() {
-		if (INSTANCE == null)
-			INSTANCE = new ProductoService();
+		if (instance == null)
+			instance = new ProductoService();
 		
-		return INSTANCE;
+		return instance;
 	}
 }

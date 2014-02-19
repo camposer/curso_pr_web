@@ -18,14 +18,17 @@ import es.indra.formacion.pr.web.to.Producto;
 /**
  * Servlet implementation class PrincipalServlet
  */
-@WebServlet("/carrito/Principal")
-public class PrincipalServlet extends HttpServlet {
+@WebServlet(
+		name = "PrincipalCarritoServlet",
+		urlPatterns={"/carrito/Principal"}
+)
+public class PrincipalCarritoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public PrincipalServlet() {
+    public PrincipalCarritoServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -45,7 +48,7 @@ public class PrincipalServlet extends HttpServlet {
 
 		request.setAttribute("productos", productos);
 		
-		getServletContext().getRequestDispatcher("/carrito/principal.jsp").forward(request, response);
+		getServletContext().getRequestDispatcher("/jsp/carrito/principal.jsp").forward(request, response);
 	}
 
 }

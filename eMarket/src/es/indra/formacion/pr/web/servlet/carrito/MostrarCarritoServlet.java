@@ -17,13 +17,13 @@ import es.indra.formacion.pr.web.to.Producto;
  * Servlet implementation class CarritoServlet
  */
 @WebServlet("/carrito/Mostrar")
-public class MostrarServlet extends HttpServlet {
+public class MostrarCarritoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MostrarServlet() {
+    public MostrarCarritoServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,7 +33,7 @@ public class MostrarServlet extends HttpServlet {
 	 */
 	@SuppressWarnings("unchecked")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		getServletContext().getRequestDispatcher("/carrito/mostrar.jsp").forward(request, response);
+		getServletContext().getRequestDispatcher("/jsp/carrito/mostrar.jsp").forward(request, response);
 
 	}
 

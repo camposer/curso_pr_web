@@ -15,13 +15,13 @@ import es.indra.formacion.pr.web.to.Producto;
  * Servlet implementation class EliminarServlet
  */
 @WebServlet("/carrito/Eliminar")
-public class EliminarServlet extends HttpServlet {
+public class EliminarCarritoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public EliminarServlet() {
+    public EliminarCarritoServlet() {
         super();
         // TODO Auto-generated constructor stub
     }

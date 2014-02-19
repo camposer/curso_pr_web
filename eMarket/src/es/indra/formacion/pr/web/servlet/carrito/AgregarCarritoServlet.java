@@ -20,13 +20,13 @@ import es.indra.formacion.pr.web.to.Producto;
  * Servlet implementation class CarritoServlet
  */
 @WebServlet("/carrito/Agregar")
-public class AgregarServlet extends HttpServlet {
+public class AgregarCarritoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public AgregarServlet() {
+	public AgregarCarritoServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
